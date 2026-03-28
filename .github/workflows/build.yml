@@ -27,8 +27,13 @@ jobs:
           curl -L -o gradle/wrapper/gradle-wrapper.jar \
             "https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.jar"
 
-      - name: Grant execute permission
-        run: chmod +x gradlew
+      - name: Fix gradlew and gradle.properties
+        run: |
+          chmod +x gradlew
+          echo 'org.gradle.jvmargs=-Xmx1536m -Dfile.encoding=UTF-8' > gradle.properties
+          echo 'android.useAndroidX=true' >> gradle.properties
+          echo 'android.enableJetifier=true' >> gradle.properties
+          echo 'kotlin.code.style=official' >> gradle.properties
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --stacktrace
